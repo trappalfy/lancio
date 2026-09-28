@@ -46,7 +46,7 @@ export function GraduatedPanel() {
         ) : isError && !data ? (
           <p className="py-10 text-center text-sm text-muted">Graduated tokens could not be loaded. Retrying.</p>
         ) : !data || data.items.length === 0 ? (
-          <EmptyState image="/brand/painting-forge-full.png" title={COPY.graduated.empty} className="py-6" />
+          <EmptyState title={COPY.graduated.empty} className="py-6" />
         ) : (
           <ul className={GRID}>
             {data.items.slice(0, MAX_CARDS).map((t, i) => (
