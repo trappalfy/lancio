@@ -1,0 +1,9 @@
+{
+  "chainId": 4663,
+  "deployBlockL1": 26078071,
+  "hook": "0x77e28eD17A5Dbde781F9F3b690B662E1fbCD2000",
+  "launchpad": "0xeb83268A9203926c314Da3e1f481515E2A0dac5e",
+  "locker": "0xd9c591a889152D3AF625fC8226588bf9B7bE3143",
+  "owner": "0x98036E3abe4A436eAEa858C5Ff8f8Af7D21D4694",
+  "treasury": "0x98036E3abe4A436eAEa858C5Ff8f8Af7D21D4694"
+}
