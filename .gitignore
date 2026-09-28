@@ -1,0 +1,33 @@
+node_modules/
+.next/
+out/
+dist/
+.env
+.env.*
+!.env.example
+!.env.local.example
+.DS_Store
+*.log
+# foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/*/31337/
+# ponder
+indexer/.ponder/
+indexer/generated/
+# local db
+*.pglite/
+.vercel
+contracts/foundry-pp/
+contracts/deployments/local.json
+# local dev uploads (create flow without PINATA_JWT)
+web/.uploads/
+# local deploy logs (the anvil fork shares chainId 4663 with mainnet; the canonical record is deployments/<chainId>.json)
+contracts/broadcast/
+# vendored upstream audit PDFs (not needed to build)
+contracts/lib/**/*.pdf
+# internal docs and references (kept local, not published)
+/LANCIO_BRIEF.md
+/CLAUDE.md
+/HERO_PARTICLES.md
+/reference/

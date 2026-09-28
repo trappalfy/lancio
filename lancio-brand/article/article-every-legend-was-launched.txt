@@ -1,0 +1,67 @@
+Before a ship could become a legend, someone had to push it into the water.
+
+In Venice, that happened at the Arsenale. Galleys were built on dry land, in long covered sheds, and then sent down a greased slipway into the lagoon. Everything a ship would later be known for, the cargoes, the storms, the ports, began with those few seconds on the ramp.
+
+The voyages were paid for the same way they were launched: together. A merchant who wanted to go to sea signed a colleganza with someone who stayed behind. One partner put up the money, the other made the voyage, and the split of the profit was written down before the ship left the lagoon. Nobody got to renegotiate it in Alexandria.
+
+The rules came first. The legend came later.
+
+Lancio is Italian for launch. We built it because launching a token today works the other way round.
+
+How a launch looks now
+
+A token goes live. In the same block, before anyone has seen the link, a bot buys a tenth of the supply. A wallet that funded the deployer last week holds another slice. The liquidity sits where a single transaction can pull it. The creator earns nothing after the first hour, so the rational move is to leave, and most do.
+
+Everyone knows this. People buy anyway, because the ramp is the only way into the water.
+
+We don't think the answer is a smarter ramp with more settings. It's a ramp with fewer: the same rules for every token, written into the contracts before the first one ships.
+
+One supply, no allocations
+
+Every token launched on Lancio is minted with 1,000,000,000 units.
+800,000,000 are sold on a bonding curve.
+200,000,000 are held by the contract for the pool at graduation.
+Nothing else. No presale, no team share, no allocation to anyone.
+
+A creator who wants to hold their own token buys it from the curve, at the curve's price, like everyone else.
+
+The curve
+
+Price follows a constant-product curve. Every buy moves it up, every sell moves it down, and there is no order book to game.
+
+Early buyers are rewarded, as they should be, but not without limit:
+The first 100M tokens cost about 0.28 ETH in total.
+The last 200M cost about 4.5 ETH.
+Market cap goes from about 2.5 ETH at the first trade to 39.3 ETH when the curve is full.
+
+From the first token to the last, the price rises roughly 15x. For anyone checking our maths: x · y = k, starting from virtual reserves of 2.73 ETH and 1,073,000,000 tokens.
+
+The first two blocks
+
+For the first two blocks after a token is created, no wallet can buy more than 1% of the supply. At the opening price, that is about 0.026 ETH.
+
+It won't stop a determined sniper with fifty funded wallets. It stops the cheap version, where one transaction takes a tenth of the supply before the link is even posted.
+
+Graduation at 8 ETH
+
+When the curve has raised 8 ETH, it closes and the token graduates. In the same transaction, all 8 ETH and the 200M reserved tokens go into a pool on Robinhood Chain.
+
+The pool opens at 0.00000004 ETH per token, within 2% of the curve's last price, so nobody gets a free jump at the handover.
+
+Then the liquidity is locked for good. The position sits in a contract that can do one thing: collect trading fees. It has no withdraw function, and it can't be upgraded to get one.
+
+Who gets paid
+
+On the curve, every trade pays 1%: 0.6% to the creator and 0.4% to Lancio.
+
+After graduation, the locked position keeps earning the pool's trading fees. Those are split 50/50 between the creator and Lancio for as long as the token trades.
+
+A token that does 40 ETH of volume on its way to graduation has already paid its creator 0.24 ETH. A token that people keep trading keeps paying. The best thing a creator can do is stay, and that is the only behaviour a launchpad should reward.
+
+The rest is up to the ship
+
+Lancio can't make a token good. No launchpad can. What it can do is make the launch the same for everyone: same supply, same curve, same two blocks, same lock, same split.
+
+After that, the legend belongs to whoever builds it.
+
+Every legend was launched. Soon, on Robinhood Chain.

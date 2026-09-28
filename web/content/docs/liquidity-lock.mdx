@@ -1,0 +1,36 @@
+import { Callout, Facts } from "@/components/docs/blocks";
+
+When a token graduates, the liquidity is locked for good. The position sits in a contract that can do one thing: collect trading fees. It has no withdraw function, and it can't be upgraded to get one.
+
+## The locker
+
+The pool position is created by the Lancio locker and belongs to it directly. It is not a transferable receipt that someone could hand on or sell.
+
+<Facts
+  rows={[
+    ["Owns", "Every graduated token's pool position"],
+    ["Can do", "Collect the position's trading fees"],
+    ["Who can trigger a collection", "Anyone"],
+    ["Withdraw function", "None"],
+    ["Owner or admin", "None"],
+    ["Upgradeable", "No, it is not a proxy"],
+  ]}
+/>
+
+The collected fees are split between the creator and Lancio, as described on [Fees](/docs/fees). Nothing else can leave the locker.
+
+## Nobody opens the pool early
+
+On Uniswap v4, a pool is identified by its two currencies, its fee, its tick spacing and its hook. Lancio's pool for every token uses a small hook contract that lets only the locker initialise it. So nobody can open that pool before graduation at a wrong price and spoil the handover. It opens once, at graduation, at 0.00000004 ETH per token.
+
+Other pools for the same token can exist elsewhere, with a different fee or hook. They are not Lancio's pool and hold none of its locked liquidity.
+
+## Rounding dust
+
+When the position is created, rounding leaves a tiny remainder that can't be placed into liquidity: a few thousand wei of ETH and a similar number of the token's smallest units, far below a billionth of either. It stays in the locker forever. Nobody can withdraw it either.
+
+<Callout title="What a lock does not mean">
+
+Locked liquidity means the pool's liquidity can never be pulled. It does not mean the price can't fall. Holders can always sell into the pool, and the price moves with every trade.
+
+</Callout>

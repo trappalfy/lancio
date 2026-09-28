@@ -1,0 +1,44 @@
+import { COPY } from "@lancio/shared";
+import { Callout } from "@/components/docs/blocks";
+
+<Callout title="Contracts">
+
+{COPY.audit}
+
+</Callout>
+
+## Tokens are made by users
+
+Anyone can launch a token on Lancio. Lancio does not review, select or endorse them. A name, ticker or image can imitate another project. Most tokens lose value, and any token can go to zero. Buy only what you can afford to lose entirely.
+
+## Smart-contract risk
+
+The contracts can contain bugs that nobody has found yet. Because they cannot be upgraded, a bug also cannot be patched in place. The same property that keeps the rules fixed keeps any flaw fixed.
+
+Graduated tokens trade in Uniswap v4 pools, so they also depend on Uniswap's contracts.
+
+## The chain underneath
+
+Every guarantee on these pages holds at the contract level, and depends on Robinhood Chain. The chain's sequencer is run by the chain operator, which orders transactions and can delay or filter them. If the sequencer stops or filters a transaction, trades may not go through when you expect, or at all. The launch window is counted in the chain's blocks, so it depends on the sequencer too.
+
+## Market risk
+
+Prices move with every trade, and fast. The curve rewards early buyers: later buyers pay more for the same number of tokens, and selling back pays less than buying cost, after 1% each way. Slippage protects you from a price worse than you accepted, not from a falling price.
+
+## The launch window has limits
+
+It caps each wallet at 1% of supply for two blocks. It won't stop a determined sniper with many funded wallets.
+
+## Your wallet, your transactions
+
+You sign every transaction yourself, and a confirmed transaction cannot be undone. Lancio never asks for your seed phrase or private key. Check the address in your browser before you connect.
+
+## Figures on the site
+
+Charts, prices and totals on the site come from Lancio's indexer of onchain events and can lag behind the chain for a few seconds. The contracts are the source of truth, and every transaction can be checked on Blockscout.
+
+<Callout title={COPY.footer.riskTitle}>
+
+{COPY.footer.risk}
+
+</Callout>

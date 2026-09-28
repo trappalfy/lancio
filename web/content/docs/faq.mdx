@@ -1,0 +1,110 @@
+import { COPY } from "@lancio/shared";
+import { Question, QuestionList } from "@/components/docs/blocks";
+
+## Launching
+
+<QuestionList>
+
+<Question q="What does it cost to launch a token?">
+
+Gas only. There is no launch fee. If you also buy your own token in the launch transaction, that buy is a normal curve buy with the 1% fee.
+
+</Question>
+
+<Question q="Can a creator get tokens for free?">
+
+No. There are no allocations of any kind. A creator who wants to hold their token buys it from the curve, at the curve's price, like everyone else. During the launch window, that buy counts against the creator's 1%.
+
+</Question>
+
+<Question q="Can I change the name, ticker or supply after launch?">
+
+No. The name, ticker and supply are fixed in the token contract. The rules of the curve, the window, graduation and fees are fixed for every token.
+
+</Question>
+
+</QuestionList>
+
+## Buying and selling
+
+<QuestionList>
+
+<Question q="Why can't I buy more than 1% right after a launch?">
+
+For the first two blocks, about 0.2 seconds, no wallet can buy more than 1% of the supply in total. See [Launch window](/docs/launch-window).
+
+</Question>
+
+<Question q="My buy from a smart-contract wallet failed right after launch. Why?">
+
+During the launch window only regular wallets can buy; contracts cannot, and smart-contract wallets count as contracts. Try again once the window has passed.
+
+</Question>
+
+<Question q="Can I sell during the launch window?">
+
+Yes. The window limits buys only. Selling back to the curve is always possible until the token graduates.
+
+</Question>
+
+<Question q="What does a price like 0.0₇393 ETH mean?">
+
+The small number counts the zeros after the decimal point. 0.0₇393 ETH is 0.0000000393 ETH.
+
+</Question>
+
+<Question q="How is market cap calculated?">
+
+Price times the full supply of 1,000,000,000, in ETH. Dollar values are converted at a recent ETH price and are approximate.
+
+</Question>
+
+</QuestionList>
+
+## Graduation and the pool
+
+<QuestionList>
+
+<Question q="What happens to my tokens when a token graduates?">
+
+Nothing changes in your wallet. It is the same token at the same address. Trading moves from the curve to the Uniswap v4 pool, which opens in the same transaction.
+
+</Question>
+
+<Question q="Can anyone remove the liquidity?">
+
+No. The position belongs to the locker, which can only collect fees. It has no withdraw function, no owner, and cannot be upgraded. See [Liquidity lock](/docs/liquidity-lock).
+
+</Question>
+
+</QuestionList>
+
+## Fees and rules
+
+<QuestionList>
+
+<Question q="How do creators claim their fees?">
+
+From [Profile → Creator fees](/profile#creator-fees). Curve fees are credited with every trade. Pool fees are credited when someone collects them from the locker, and anyone can trigger that.
+
+</Question>
+
+<Question q="Can Lancio change the fees or the rules?">
+
+No. Every parameter is fixed in the contracts. The owner can only change the treasury address and pause the creation of new tokens. See [Admin powers](/docs/contracts#admin-powers).
+
+</Question>
+
+<Question q="Can Lancio stop me from selling?">
+
+No contract function can pause trading. Robinhood Chain's operator runs the sequencer and can delay or filter transactions; see [Risks](/docs/risks).
+
+</Question>
+
+<Question q="Have the contracts been reviewed externally?">
+
+{COPY.audit}
+
+</Question>
+
+</QuestionList>

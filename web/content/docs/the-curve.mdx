@@ -1,0 +1,66 @@
+import { Callout, ControlNumbers, Figure } from "@/components/docs/blocks";
+
+Every token has its own curve. It holds two reserves, ETH and tokens, and their product stays constant: **x · y = k**. Every curve starts from the same virtual reserves of 2.73 ETH and 1,073,000,000 tokens.
+
+The reserves are *virtual* because nobody deposited that ETH. It only sets the starting price. The ETH actually raised is the virtual ETH minus 2.73, and the tokens sold are 1,073,000,000 minus the virtual tokens. When 800,000,000 tokens have been sold, exactly 8 ETH has been raised and the token [graduates](/docs/graduation).
+
+## Buying
+
+You send `ethIn`. The 1% fee comes off first; the rest, `net`, goes into the curve. You receive the tokens that keep `k` constant.
+
+```
+k         = 2.73 ETH × 1,073,000,000
+fee       = ethIn × 1%
+net       = ethIn − fee
+tokensOut = vTok − ceil(k / (vEth + net))
+```
+
+## Selling
+
+You send `tokensIn`. The curve pays out the ETH that keeps `k` constant, and the 1% fee comes off that.
+
+```
+grossOut = vEth − ceil(k / (vTok + tokensIn))
+fee      = grossOut × 1%
+ethOut   = grossOut − fee
+```
+
+Divisions round in the curve's favour, never in the trader's. The fee is always paid in ETH, never in the token. Where it goes is on [Fees](/docs/fees).
+
+## Price, market cap, progress
+
+```
+price    = vEth / vTok
+mcap     = price × 1,000,000,000
+progress = ETH raised / 8 ETH
+```
+
+Market cap counts the whole supply of 1,000,000,000, including the 200,000,000 held for the pool. With a fixed supply and nothing vesting, market cap and fully diluted value are the same number.
+
+## The control numbers
+
+Early buyers are rewarded, as they should be, but not without limit. These figures come straight from the formulas above, before fees.
+
+<ControlNumbers />
+
+<Figure
+  src="/brand/chart-curve.png"
+  alt="Chart of market cap in ETH against tokens sold: from about 2.5 ETH at 0 to 39.3 ETH at 800M, with the first 100M costing about 0.28 ETH and the last 200M about 4.5 ETH"
+  width={1600}
+  height={900}
+  caption="Market cap in ETH as the 800M curve tokens sell. Shaded areas: the ETH paid for the first 100M and for the last 200M."
+/>
+
+## Slippage and deadlines
+
+Every buy and every sell carries a minimum amount out and a deadline. If the price moves past your slippage, or the transaction waits too long to be included, it reverts and nothing is traded.
+
+<Callout title="Selling is never paused">
+
+Until a token graduates, you can always sell back to its curve. No admin function can stop trading. After graduation, trading continues in the pool.
+
+</Callout>
+
+## The last buy
+
+If a buy asks for more tokens than the curve has left, it is filled partially: you receive every token left on the curve, pay only the ETH needed plus the 1% fee on it, and the rest of your ETH comes back in the same transaction. That buy graduates the token.

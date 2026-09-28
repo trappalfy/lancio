@@ -1,0 +1,41 @@
+import { Callout, FeeExamples } from "@/components/docs/blocks";
+
+A merchant who wanted to go to sea signed a colleganza with someone who stayed behind. The split of the profit was written down before the ship left the lagoon, and nobody got to renegotiate it in Alexandria. Lancio's fees work the same way: the split is in the contracts, and it is the same for every token.
+
+## On the curve
+
+Every buy and every sell on the curve pays 1%, in ETH:
+
+- **0.6%** to the creator
+- **0.4%** to Lancio
+
+On a buy, the fee comes off the ETH you send. On a sell, it comes off the ETH you receive. It is never taken in the token.
+
+There is no launch fee. Creating a token costs only gas.
+
+## After graduation
+
+The locked position keeps earning the pool's trading fees, 1% of every swap. Those are split 50/50 between the creator and Lancio for as long as the token trades.
+
+- **The ETH side** is credited on the launchpad: half to the creator's claimable balance, half to Lancio's.
+- **The token side** goes out directly: half to the creator's wallet, half to Lancio's treasury.
+
+Pool fees are split when someone collects them from the locker. Anyone can trigger a collection, including the creator.
+
+## Claiming
+
+Creator fees in ETH build up as a balance in the launchpad contract, and the creator claims them when they like, from [Profile → Creator fees](/profile#creator-fees). Each trade only records what is owed, so a payment to a broken or hostile address can never block anyone's trade.
+
+A creator can hand the role to another wallet. Unclaimed fees go with it.
+
+## What that adds up to
+
+<FeeExamples />
+
+A token that people keep trading keeps paying. The best thing a creator can do is stay, and that is the only behaviour a launchpad should reward.
+
+<Callout title="Where Lancio's share goes">
+
+Lancio's share goes to a treasury address. The owner can change that address, and that is all: no fee, split or rate can be changed. See [Contracts](/docs/contracts#admin-powers).
+
+</Callout>

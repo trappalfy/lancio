@@ -1,0 +1,33 @@
+import { Callout, RulesTable } from "@/components/docs/blocks";
+
+Lancio is a token launchpad on Robinhood Chain. Anyone can launch a token here, and every token is launched under the same rules. The rules were written into the contracts before the first token shipped, and nobody can change them for a token that is already live.
+
+*Lancio* is Italian for launch. In Venice, galleys were built on dry land at the Arsenale and sent down a greased slipway into the lagoon. Everything a ship would later be known for began with those few seconds on the ramp. The rules came first. The legend came later.
+
+## The life of a token
+
+1. **Launch.** A creator picks a name, a ticker and an image, and signs one transaction. The contract mints 1,000,000,000 tokens. There is no launch fee, only gas.
+2. **The first two blocks.** For the [launch window](/docs/launch-window), no wallet can buy more than 1% of the supply.
+3. **The curve.** The price follows a [constant-product curve](/docs/the-curve). Every buy moves it up, every sell moves it down.
+4. **Graduation.** When the curve has raised 8 ETH, it closes. In the [same transaction](/docs/graduation), all 8 ETH and the 200,000,000 reserved tokens go into a pool on Robinhood Chain.
+5. **The lock.** The pool position is [locked for good](/docs/liquidity-lock). It keeps earning trading fees, [split 50/50](/docs/fees) between the creator and Lancio for as long as the token trades.
+
+## One supply, no allocations
+
+Every token launched on Lancio is minted with 1,000,000,000 units. 800,000,000 are sold on the bonding curve. 200,000,000 are held by the contract for the pool at graduation. Nothing else: no presale, no team share, no allocation to anyone.
+
+A creator who wants to hold their own token buys it from the curve, at the curve's price, like everyone else.
+
+## The rules at a glance
+
+<RulesTable />
+
+## What Lancio does and does not do
+
+You sign every transaction from your own wallet, and Lancio never holds your keys. The ETH on a curve and any unclaimed fees sit in the contracts, under the rules on these pages, not in an account anyone at Lancio can move.
+
+<Callout title="The rest is up to the ship">
+
+Lancio can't make a token good. No launchpad can. What it can do is make the launch the same for everyone: same supply, same curve, same two blocks, same lock, same split. After that, the legend belongs to whoever builds it.
+
+</Callout>

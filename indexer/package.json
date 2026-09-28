@@ -1,0 +1,25 @@
+{
+  "name": "@lancio/indexer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "codegen": "ponder codegen",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lancio/shared": "workspace:*",
+    "hono": "^4.13.9",
+    "ponder": "^0.17.12",
+    "viem": "^2.37.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

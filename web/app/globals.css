@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+/*
+ * Lancio design tokens (brief §10.1) + contrast fixes.
+ * Single dark theme (owner decision 2026-09-28). Every TEXT token is >= 4.5:1 on --bg, --surface and --surface-2
+ * (and --muted also on the .graduated-panel gradient). Computed values, WCAG 2.x:
+ *   dark:  text 12.4+  muted 5.44+  accent-text 6.56+  buy 5.57+  sell 4.78+ (was #B0493A, 2.9)
+ *   filled buttons: on-accent 7.6, on-buy 6.5, on-sell 5.1, on-crimson 8.1
+ * --accent / --crimson / --*-bg are fills, never text on --bg.
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14100c;
+  --surface: #1e1712;
+  --surface-2: #2a2019;
+  --border: #3a2e22;
+  --text: #ede2cd;
+  --muted: #a89479;
+  --accent: #c9a058;
+  --accent-text: #c9a058;
+  --accent-ink: #1a120b;
+  --on-accent: #1a120b;
+  --accent-soft: color-mix(in srgb, #c9a058 16%, transparent);
+  --buy: #8fa05a;
+  --sell: #d0735f;
+  --buy-bg: #8fa05a;
+  --on-buy: #1a120b;
+  --sell-bg: #a94536;
+  --on-sell: #f6efe3;
+  --crimson: #7a2a22;
+  --on-crimson: #f1eadf;
+  --cream: #f1eadf;
+  --pill-active: #3a2e22;
+  --overlay: rgb(10 8 6 / 0.72);
+  --shadow: 0 1px 0 0 rgb(255 236 210 / 0.03) inset, 0 18px 40px -20px rgb(0 0 0 / 0.65);
+  --shadow-pop: 0 16px 48px -12px rgb(0 0 0 / 0.7), 0 0 0 1px var(--border);
+  --texture-opacity: 0.04;
+}
+
+:root {
+  --header-h: 64px;
+}
+@media (min-width: 768px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+/* Colours: utilities resolve to the live CSS variable (theme switch without re-render). */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-buy: var(--buy);
+  --color-sell: var(--sell);
+  --color-buy-bg: var(--buy-bg);
+  --color-on-buy: var(--on-buy);
+  --color-sell-bg: var(--sell-bg);
+  --color-on-sell: var(--on-sell);
+  --color-crimson: var(--crimson);
+  --color-on-crimson: var(--on-crimson);
+  --color-cream: var(--cream);
+  --color-pill-active: var(--pill-active);
+  --color-overlay: var(--overlay);
+  --shadow-section: var(--shadow);
+  --shadow-pop: var(--shadow-pop);
+}
+
+@theme {
+  --font-display: var(--font-cinzel), "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Scale 12/13/14/16/20/28/40/56 — Tailwind's xs/sm/base/xl + these. */
+  --text-13: 0.8125rem;
+  --text-13--line-height: 1.25rem;
+  --text-28: 1.75rem;
+  --text-28--line-height: 2.125rem;
+  --text-40: 2.5rem;
+  --text-40--line-height: 2.875rem;
+  --text-56: 3.5rem;
+  --text-56--line-height: 3.75rem;
+
+  --tracking-display: 0.06em;
+
+  --radius-section: 28px;
+  --radius-card: 20px;
+  --radius-image: 14px;
+
+  --breakpoint-xs: 480px;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    scroll-behavior: smooth;
+    scrollbar-color: var(--border) transparent;
+  }
+  body {
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+  /* Status banner dismissal is applied before paint by the inline script in app/layout.tsx. */
+  [data-banner-dismissed] .status-banner {
+    display: none;
+  }
+}
+
+/* Page container: ~1200px content, 16px gutters on mobile. */
+@utility container-page {
+  width: 100%;
+  max-width: 1232px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* Hero sections that sit under the (transparent) sticky header. */
+@utility under-header {
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: var(--header-h);
+}
+
+/* Display heading (Cinzel: caps, tracking). Use for page/section titles and slogans only.
+   The --heading-* variables are set by the temporary font preview (lib/font-options.ts). */
+@utility font-heading {
+  font-family: var(--font-display);
+  font-weight: var(--heading-weight, 600);
+  letter-spacing: var(--heading-tracking, var(--tracking-display));
+  font-variation-settings: var(--heading-variation, normal);
+  font-variant-numeric: normal;
+}
+
+/* Barely-there canvas weave for big panels (3–5% opacity). Works over any background. */
+@utility canvas-texture {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: var(--texture-opacity);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      repeating-linear-gradient(0deg, rgb(0 0 0 / 0.55) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgb(0 0 0 / 0.4) 0 1px, transparent 1px 3px);
+  }
+}
+
+/* Graduated panel: warm --surface → antique gold at low alpha. Accent share stays <= ~15%,
+   which keeps --muted >= 4.5:1 (4.6). Pair with canvas-texture. */
+@utility graduated-panel {
+  background:
+    radial-gradient(110% 90% at 100% 0%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 70%),
+    linear-gradient(160deg, var(--surface) 35%, color-mix(in srgb, var(--accent) 6%, var(--surface)) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Paintings in empty states / docs: muted and darkened so they never compete with data. */
+@utility painting-muted {
+  filter: saturate(0.8) brightness(0.72) contrast(0.95);
+}

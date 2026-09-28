@@ -1,0 +1,35 @@
+import { ChainInfo, ContractList } from "@/components/docs/blocks";
+
+Lancio is three contracts on Robinhood Chain, plus one token contract per launch. None of them is a proxy, so none can be upgraded. The source is verified on Blockscout: open any address below to read it.
+
+## Lancio contracts
+
+<ContractList group="lancio" />
+
+Every token launched on Lancio is its own contract: a standard ERC-20 with 18 decimals and a fixed supply of 1,000,000,000, minted once. It has no owner and no mint or burn function. Its address is on the token's page.
+
+## Uniswap v4 on Robinhood Chain
+
+Graduated tokens trade in Uniswap v4 pools. These are Uniswap's own contracts, used as they are.
+
+<ContractList group="uniswap" />
+
+<ChainInfo />
+
+## Admin powers
+
+The launchpad has an owner. Ownership can be handed over in two steps, but never renounced. The owner can do exactly two things:
+
+- change the treasury address that receives Lancio's share of fees;
+- pause and resume the creation of **new** tokens.
+
+The owner cannot:
+
+- stop or pause trading, on any curve or in any pool;
+- change any parameter, such as supply, curve, fees, launch window or graduation threshold, for any token;
+- touch the ETH on a curve, a creator's unclaimed fees, or a locked position;
+- upgrade any contract.
+
+The locker and the hook have no owner at all.
+
+These guarantees hold at the contract level. They rely on Robinhood Chain itself, which is covered in [Risks](/docs/risks).

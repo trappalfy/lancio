@@ -1,0 +1,41 @@
+import { Callout, Facts } from "@/components/docs/blocks";
+
+A token goes live. In the same block, before anyone has seen the link, a bot buys a tenth of the supply. That is how most launches look today. The launch window is there to stop the cheap version of it.
+
+## The rule
+
+For the first two Robinhood Chain blocks of a token's life, the block it is created in and the next one, no wallet can buy more than 1% of the supply: 10,000,000 tokens. At the opening price, that is about 0.026 ETH.
+
+The limit is cumulative. Two buys of 6,000,000 tokens in the window don't pass: the second one would take the wallet to 12,000,000, so it reverts and nothing is bought.
+
+Robinhood Chain produces a block roughly every 0.1 seconds, so the window lasts about 0.2 seconds. Blocks are counted on Robinhood Chain itself.
+
+<Facts
+  rows={[
+    ["Length", "Creation block + the next one (≈ 0.2 s)"],
+    ["Limit per wallet", "1% of supply, 10,000,000 tokens, cumulative"],
+    ["Who can buy", "Regular wallets only; contracts cannot"],
+    ["Creator's own buy", "Counts against the creator's 1%"],
+    ["Selling", "Not limited"],
+  ]}
+/>
+
+## Only wallets, not contracts
+
+During the window, only regular wallets, externally owned accounts, can buy. A contract cannot. That means one transaction can't spread a buy across fifty helper contracts that each take 1%.
+
+Smart-contract wallets count as contracts here. If you use one, you can buy as soon as the window has passed, a fraction of a second after launch. From then on, contracts buy like anyone else.
+
+## The creator is no exception
+
+A creator can buy their own token in the launch transaction. That buy happens on the curve, at the curve's price, with the same 1% fee, and it counts against the creator's 1%, like everyone else's.
+
+## What it doesn't stop
+
+<Callout title="An honest limit">
+
+It won't stop a determined sniper with fifty funded wallets. It stops the cheap version, where one transaction takes a tenth of the supply before the link is even posted.
+
+</Callout>
+
+There are no taxes, blocklists or other rules on top of this one. The window is the same two blocks for every token.

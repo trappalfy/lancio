@@ -1,0 +1,32 @@
+import { Callout, PoolParams } from "@/components/docs/blocks";
+
+A token graduates when its curve has raised 8 ETH, which happens exactly when all 800,000,000 curve tokens have been sold. There is no vote and no manual step: the buy that completes the curve also opens the pool.
+
+## What happens, in one transaction
+
+1. **The curve closes.** Buying and selling on the curve stop for good. From here on, the token trades in its pool.
+2. **The pool opens.** A Uniswap v4 pool for the token and ETH is opened on Robinhood Chain at 0.00000004 ETH per token.
+3. **The liquidity goes in.** All 8 ETH and the 200,000,000 reserved tokens are added across the full price range.
+4. **The position is locked.** It belongs to the [locker](/docs/liquidity-lock), which can only collect its fees.
+
+Because it all happens in the same transaction, there is no moment between the curve closing and the pool opening when someone else can step in.
+
+<PoolParams />
+
+## The handover price
+
+The curve's last price is about 0.0000000393 ETH per token. The pool opens at 0.00000004 ETH, about 1.8% higher, within the 2% the rules promise. So nobody gets a free jump at the handover: after the 1% fee on the curve and the 1% fee in the pool, buying the last curve tokens and selling them straight into the pool does not pay.
+
+## Oversized buys
+
+If the graduating buy sends more ETH than the curve needs, it is filled partially. You receive every token left on the curve, pay only the ETH needed plus the 1% fee on that part, and the rest of your ETH is refunded in the same transaction.
+
+<Callout title="Gas">
+
+The graduating buy also opens the pool and adds the liquidity, so it uses more gas than a normal buy. Expect a higher network fee in your wallet for that one transaction.
+
+</Callout>
+
+## After graduation
+
+Your tokens don't change. It is the same token at the same address; only the place it trades moves from the curve to the pool. The pool's trading fees are split between the creator and Lancio, see [Fees](/docs/fees).
