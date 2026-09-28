@@ -50,6 +50,7 @@ export const COPY = {
     footnote: "Figures come from Lancio's indexer of onchain events. The 24h view covers the last full UTC day.",
     chartSubtitle: "Last 14 UTC days. The most recent full day is in gold.",
     emptyChart: "The first day of data appears after the first UTC day closes.",
+    empty: "No launches yet. The figures fill in with the first token.",
   },
   token: {
     waitingFirstTrade: "Waiting for the first trade.",

@@ -1,8 +1,9 @@
 "use client";
 
 import { COPY, PARAMS, formatCount, formatEth, formatPct, formatUsd, weiToEthNumber, type ProtocolStats } from "@lancio/shared";
+import { Plus } from "lucide-react";
 import { useState, type ReactNode } from "react";
-import { Card, PillTabs, Skeleton, StatTile, SubCard } from "@/components/ui";
+import { Button, Card, EmptyState, PillTabs, Skeleton, StatTile, SubCard } from "@/components/ui";
 import { useDaily, useEthUsd, useStats } from "@/lib/api";
 import { useWeiToUsd } from "@/lib/usd";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,10 @@ function UpdatedLine({ stats }: { stats: ProtocolStats | undefined }) {
 }
 
 function Overview() {
-  const [win, setWin] = useState<Win>("24h");
+  // Until the first UTC day with activity has closed, the 24h view is all zeros: open on "All time" instead.
+  const { data: allTime } = useStats("all");
+  const [picked, setWin] = useState<Win | null>(null);
+  const win: Win = picked ?? (allTime?.latestCompleteDay ? "24h" : "all");
   const { data: stats, isLoading, isError } = useStats(win);
   const money = useMoney();
   const is24 = win === "24h";
@@ -240,12 +244,41 @@ function Charts() {
   );
 }
 
+/** Nothing launched yet: one card instead of rows of zeros. */
+function NoLaunches() {
+  return (
+    <Card as="section" texture aria-labelledby="analytics-title">
+      <h1 id="analytics-title" className="font-heading text-28 text-text md:text-40">
+        {COPY.analytics.title}
+      </h1>
+      <p className="mt-2 max-w-xl text-sm text-muted md:text-base">{COPY.analytics.subtitle}</p>
+      <EmptyState
+        title={COPY.analytics.empty}
+        className="pt-12 pb-4"
+        action={
+          <Button href="/launchpad/create">
+            <Plus size={16} aria-hidden />
+            Create
+          </Button>
+        }
+      />
+    </Card>
+  );
+}
+
 export function AnalyticsView() {
+  const { data: allTime } = useStats("all");
   return (
     <div className="container-page flex flex-col gap-4 py-8 md:gap-6 md:py-12">
-      <Overview />
-      <Fees />
-      <Charts />
+      {allTime?.launches === 0 ? (
+        <NoLaunches />
+      ) : (
+        <>
+          <Overview />
+          <Fees />
+          <Charts />
+        </>
+      )}
     </div>
   );
 }
