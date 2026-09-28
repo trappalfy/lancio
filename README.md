@@ -2,7 +2,7 @@
 
 Token launchpad on Robinhood Chain (chainId 4663). One supply, one curve, the same rules for every token; liquidity locked forever at graduation.
 
-- Packages: `contracts/` (Foundry), `packages/shared/` (math, ABIs, copy), `indexer/` (Ponder), `web/` (Next.js)
+- Packages: `contracts/` (Foundry), `packages/shared/` (math, ABIs, copy), `web/` (Next.js, with the built-in indexer in `web/indexer/`), `indexer/` (optional standalone Ponder indexer)
 
 ## Requirements
 Node ≥ 22, pnpm 12, Foundry (`curl -L https://foundry.paradigm.xyz | bash && foundryup`).
@@ -11,9 +11,10 @@ Node ≥ 22, pnpm 12, Foundry (`curl -L https://foundry.paradigm.xyz | bash && f
 ```bash
 pnpm install
 scripts/dev-chain.sh                 # terminal 1: anvil fork of Robinhood mainnet + Lancio contracts
-pnpm --filter @lancio/indexer dev    # terminal 2: indexer on :42069
-pnpm --filter @lancio/web dev        # terminal 3: site on :3000 (set NEXT_PUBLIC_USE_MOCKS=false in web/.env.local)
+pnpm --filter @lancio/web dev        # terminal 2: site on :3000 (set NEXT_PUBLIC_USE_MOCKS=false in web/.env.local)
 ```
+The site indexes the fork itself (built-in indexer, status at `/api/indexer`). To use the Ponder indexer instead, run
+`pnpm --filter @lancio/indexer dev` (on :42069) and set `NEXT_PUBLIC_INDEXER_URL=http://localhost:42069`.
 Wallet: add network RPC `http://127.0.0.1:8545`, chainId 4663, and import a test key printed in `/tmp/lancio-anvil.log`.
 The public Robinhood RPC keeps only recent state, so a long-running fork eventually fails; set `RPC_URL_4663` to an Alchemy URL for longer sessions.
 
@@ -32,7 +33,7 @@ pnpm --filter @lancio/shared test                        # curve math vectors (m
 4. `node contracts/script/export-abi.mjs` and put the addresses + deploy block into the web and indexer environments (`NEXT_PUBLIC_LAUNCHPAD`, `NEXT_PUBLIC_LOCKER`, `NEXT_PUBLIC_HOOK`, `NEXT_PUBLIC_START_BLOCK`; `LAUNCHPAD_ADDRESS`, `LOCKER_ADDRESS`, `HOOK_ADDRESS`, `START_BLOCK`).
 
 ## Production
-- **web/** → Vercel. Env: see `.env.example` (RPC, indexer URL, WalletConnect projectId, Pinata JWT, DATABASE_URL + SESSION_SECRET for the forum, X handle).
-- **indexer/** → Railway/Fly with Postgres (`DATABASE_URL`), `PONDER_RPC_URL_4663` = Alchemy URL.
+- **web/** → Vercel + Postgres (Neon). Env: see `.env.example` (contract addresses + start block, WalletConnect projectId, Pinata JWT, DATABASE_URL + SESSION_SECRET, X handle). With `NEXT_PUBLIC_INDEXER_URL` empty the site is its own indexer: API requests sync Lancio's logs from the public RPC into DATABASE_URL (only while someone is on the site) and `/api/indexer` shows the indexed block.
+- **indexer/** (optional, for high traffic) → Railway/Fly with Postgres (`DATABASE_URL`), `PONDER_RPC_URL_4663` = a paid RPC; then point `NEXT_PUBLIC_INDEXER_URL` at it. It fetches every chain block, so it needs a paid RPC plan.
 - The contracts have no admin key over user funds. The owner can only change the treasury address and pause creation of new tokens.
 - The contracts are open source and verified, but have not been externally audited.

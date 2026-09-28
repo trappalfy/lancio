@@ -257,6 +257,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.3
         version: 0.45.3(@electric-sql/pglite@0.5.8)(@opentelemetry/api@1.9.1)(kysely@0.26.3)(pg@8.23.0)(postgres@3.4.9)
+      hono:
+        specifier: ^4.13.9
+        version: 4.13.9
       iron-session:
         specifier: ^9.0.1
         version: 9.0.1

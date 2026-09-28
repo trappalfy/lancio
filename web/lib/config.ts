@@ -18,7 +18,11 @@ const deployment = getDeployment({
 export const config = {
   chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID || robinhood.id),
   rpcUrl: process.env.NEXT_PUBLIC_RPC_URL || robinhood.rpcUrls.default.http[0],
-  indexerUrl: (process.env.NEXT_PUBLIC_INDEXER_URL || "http://localhost:42069").replace(/\/+$/, ""),
+  /**
+   * External indexer (the Ponder app in indexer/, e.g. http://localhost:42069). Empty → the built-in indexer
+   * (web/indexer/), served same-origin under /api and kept in sync by the site itself.
+   */
+  indexerUrl: (process.env.NEXT_PUBLIC_INDEXER_URL || "").replace(/\/+$/, ""),
   siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, ""),
   /** X handle without "@", "" when not configured. */
   xHandle: (process.env.NEXT_PUBLIC_X_HANDLE || "").replace(/^@/, ""),

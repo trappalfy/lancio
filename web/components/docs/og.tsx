@@ -208,7 +208,7 @@ async function tokenImage(src: string | null, seed: string): Promise<string> {
 
 async function fetchToken(address: string): Promise<TokenResponse | null> {
   if (!isAddress(address) || config.prelaunch) return null;
-  if (config.useMocks) return api.token(address).catch(() => null);
+  if (config.useMocks || !config.indexerUrl) return api.token(address, AbortSignal.timeout(3000)).catch(() => null);
   try {
     const res = await fetch(`${config.indexerUrl}/api/tokens/${address.toLowerCase()}`, {
       signal: AbortSignal.timeout(3000),

@@ -1,7 +1,9 @@
 import { index, onchainTable, primaryKey } from "ponder";
 
 /**
- * Lancio indexer schema. Amounts are wei / token units (numeric(78)), timestamps unix seconds,
+ * Lancio indexer schema (standalone Ponder indexer, optional). Production runs the built-in indexer in
+ * web/indexer/, which mirrors this schema and the handlers in src/ — change both together.
+ * Amounts are wei / token units (numeric(78)), timestamps unix seconds,
  * addresses lowercase. Rolling windows (24h / 7d volume, change24h) are computed at query time
  * over `trade` — see src/api/.
  */

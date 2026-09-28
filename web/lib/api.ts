@@ -44,10 +44,19 @@ async function mocks() {
   return (await import("./mock")).mockApi;
 }
 
+/** Set by instrumentation.ts on the server: the built-in indexer answering in-process (web/indexer/server.ts). */
+type ServerIndexer = { get: <T>(path: string, params: Params) => Promise<T> };
+
 async function get<T>(path: string, params?: Params, signal?: AbortSignal): Promise<T> {
   if (config.useMocks) return (await mocks()).get<T>(path, params ?? {});
   if (config.prelaunch) return (await import("./prelaunch")).prelaunchGet<T>(path, params ?? {}, signal);
-  const res = await fetch(`${config.indexerUrl}/api${path}${qs(params)}`, { signal, headers: { accept: "application/json" } });
+  if (!config.indexerUrl && typeof window === "undefined") {
+    const builtin = (globalThis as { __lancioIndexer?: ServerIndexer }).__lancioIndexer;
+    if (builtin) return builtin.get<T>(path, params ?? {});
+  }
+  // Built-in indexer from the browser: same origin. Server without the in-process hook: absolute site URL.
+  const base = config.indexerUrl || (typeof window === "undefined" ? config.siteUrl : "");
+  const res = await fetch(`${base}/api${path}${qs(params)}`, { signal, headers: { accept: "application/json" } });
   if (!res.ok) throw new ApiError(res.status, `${res.status} ${res.statusText} — ${path}`);
   return (await res.json()) as T;
 }
