@@ -46,6 +46,7 @@ async function mocks() {
 
 async function get<T>(path: string, params?: Params, signal?: AbortSignal): Promise<T> {
   if (config.useMocks) return (await mocks()).get<T>(path, params ?? {});
+  if (config.prelaunch) return (await import("./prelaunch")).prelaunchGet<T>(path, params ?? {}, signal);
   const res = await fetch(`${config.indexerUrl}/api${path}${qs(params)}`, { signal, headers: { accept: "application/json" } });
   if (!res.ok) throw new ApiError(res.status, `${res.status} ${res.statusText} — ${path}`);
   return (await res.json()) as T;
