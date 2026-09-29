@@ -8,3 +8,6 @@ allowBuilds:
   keccak: true
   unrs-resolver: true
   utf-8-validate: true
+overrides:
+  # cuer (RainbowKit's QR code) asks qr for border 0, which qr >= 0.6 rejects: the WalletConnect QR crashed the page.
+  cuer>qr: 0.5.5
