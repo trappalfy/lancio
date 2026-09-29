@@ -21,8 +21,10 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "localhost" },
       { protocol: "http", hostname: "127.0.0.1" },
     ],
-    // Local IPs are blocked by default since Next 16; allow them in dev only (local upload API / indexer).
-    dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
+    // Local IPs are blocked by default since Next 16; allow them in dev, or when the site itself runs on localhost
+    // (a local production build, e.g. for a demo recording: token images come from the local upload API).
+    dangerouslyAllowLocalIP:
+      process.env.NODE_ENV !== "production" || /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(process.env.NEXT_PUBLIC_SITE_URL ?? ""),
   },
   async redirects() {
     return [{ source: "/launchpad", destination: "/", statusCode: 301 }];
