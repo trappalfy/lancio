@@ -1,26 +1,27 @@
-import type { EthUsdResponse } from "@lancio/shared";
+import { ethUsdSources, type EthUsdResponse } from "@lancio/shared";
 
 const TTL_MS = 60_000;
 const STALE_MAX_MS = 15 * 60_000; // past this, report null rather than an old price
-const URL =
-  process.env.COINGECKO_API_KEY
-    ? `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&x_cg_demo_api_key=${encodeURIComponent(process.env.COINGECKO_API_KEY)}`
-    : "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+const SOURCES = ethUsdSources(process.env.COINGECKO_API_KEY);
 
 let cached: { usd: number; at: number } | null = null;
 let lastAttempt = 0;
 let inflight: Promise<void> | null = null;
 
+/** First source that answers with a price wins; on total failure the previous value is kept. */
 async function refresh() {
   lastAttempt = Date.now();
-  try {
-    const res = await fetch(URL, { signal: AbortSignal.timeout(5_000), headers: { accept: "application/json" } });
-    if (!res.ok) return;
-    const json = (await res.json()) as { ethereum?: { usd?: unknown } };
-    const usd = json.ethereum?.usd;
-    if (typeof usd === "number" && Number.isFinite(usd) && usd > 0) cached = { usd, at: Date.now() };
-  } catch {
-    // keep the previous value; callers get null once it is too old
+  for (const src of SOURCES) {
+    try {
+      const res = await fetch(src.url, { signal: AbortSignal.timeout(5_000), headers: { accept: "application/json" } });
+      const usd = res.ok ? src.parse(await res.json()) : undefined;
+      if (usd !== undefined) {
+        cached = { usd, at: Date.now() };
+        return;
+      }
+    } catch {
+      // try the next source; callers get null once the cached value is too old
+    }
   }
 }
 
